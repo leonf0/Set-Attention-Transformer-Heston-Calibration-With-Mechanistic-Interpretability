@@ -56,7 +56,3 @@ python -m scripts.run_recalibration
 python -m scripts.run_probes
 python -m scripts.run_sae
 ```
-
-Datasets and trained runs are cached on disk (`data/`, `runs/`), so the
-analysis scripts reload identical state rather than recomputing it — the same
-mechanism the notebook itself uses.
