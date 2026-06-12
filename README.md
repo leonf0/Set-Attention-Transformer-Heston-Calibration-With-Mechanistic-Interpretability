@@ -28,7 +28,7 @@ heston_sat_mechinterp/
 │   ├── __init__.py
 │   ├── run_checks.py                # (1)  pricing/inversion sanity checks
 │   ├── generate_data.py             # (2)  dataset generation + example smiles figure
-│   ├── train_main.py                # (3)  train SAT + MLP (optional aug arm)
+│   ├── train_main.py                # (3)  train SAT + MLP
 │   ├── train_ablations.py           # (4)  train ablation architectures
 │   ├── run_rq1.py                   # (5)  sparsity sweep
 │   ├── run_rq2.py                   # (6)  PMA seed specialization
