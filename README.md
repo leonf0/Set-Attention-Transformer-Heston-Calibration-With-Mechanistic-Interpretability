@@ -1,49 +1,47 @@
-# Heston SAT — Mechanistic Interpretability
-
-This codebase is a direct re-organisation of `HestonSAT_MechInterp.ipynb` into
-`src/` (definitions) and `scripts/` (the notebook's executable cells). All
-functions, classes, and constants are copied verbatim from the notebook; the
-only additions are the import statements each module needs, and the analysis
-scripts repeat the notebook's own five `bundle`-construction lines (from the
-data-generation cell) so each script is standalone. The unused
-`from IPython.display import display, Markdown` import was dropped.
+# Heston Calibration Set Attention Transformer + Mechanistic Interpretability
 
 Dependencies: numpy, scipy, pandas, torch, matplotlib.
 
-## Layout (notebook cell → file)
+## Repo Structure
 
-| Cell | Contents | File |
-|---|---|---|
-| 0–1 | environment, paths, grid, experiment config | `src/config.py` |
-| 2 | banner / savefig / seeding / json helpers | `src/utils.py` |
-| 3, 4, 6 (first half) | Black–Scholes, Heston CF, Carr–Madan, `build_iv_surface` | `src/heston.py` |
-| 5, 6 (second half), 7 | label transforms, LHS sampling, dataset generation/caching, splits, loaders | `src/data.py` |
-| 8 | sparsity masks, MLP imputation, train-time augmenter | `src/sparsity.py` |
-| 11 | SAB, PMA, `HestonSetAttention` | `src/models/set_attention.py` |
-| 12 | MLP, Transformer+PE, 2D CNN baselines | `src/models/baselines.py` |
-| 13 | model registry (`MODEL_BUILDERS`, `build_model`, …) | `src/models/__init__.py` |
-| 14 | train/evaluate/`run_training`/`predict`/`compute_metrics` | `src/training.py` |
-| 15 | run dirs, checkpointing, `train_one` / `train_many` | `src/runs.py` |
-| 19 | internals collection, attention stats, seed ablation | `src/interp.py` |
-| 22 | re-pricing / recalibration RMSE | `src/recalibration.py` |
-| 24 | ridge probe utilities | `src/probes.py` |
-| 26 | surface properties + sparse autoencoder | `src/sae.py` |
-| 9 | pricing/inversion sanity checks | `scripts/run_checks.py` |
-| 10 | data generation + example smiles figure | `scripts/generate_data.py` |
-| 16 | train SAT + MLP (and optional aug arm) | `scripts/train_main.py` |
-| 17 | train ablation architectures | `scripts/train_ablations.py` |
-| 18 | RQ1 sparsity sweep | `scripts/run_rq1.py` |
-| 20 | RQ2 PMA seed specialization | `scripts/run_rq2.py` |
-| 21 | RQ3 permutation invariance + noise robustness | `scripts/run_rq3.py` |
-| 23 | recalibration of predicted parameters | `scripts/run_recalibration.py` |
-| 25 | linear probes across depth | `scripts/run_probes.py` |
-| 27 | SAE training + feature characterisation | `scripts/run_sae.py` |
+heston_sat_mechinterp/
+├── README.md                        
+├── src/
+│   ├── __init__.py                  
+│   ├── config.py                    # paths, IV grid, experiment constants
+│   ├── utils.py                     # banner, savefig, seeding, JSON helpers
+│   ├── heston.py                    # Black–Scholes, Heston CF, Carr–Madan, build_iv_surface
+│   ├── data.py                      # label transforms, LHS sampling, generation/caching, splits, loaders
+│   ├── sparsity.py                  # keep-masks, MLP imputation, train-time augmenter
+│   ├── models/
+│   │   ├── __init__.py              # registry (MODEL_BUILDERS, build_model, ARCH_LABELS)
+│   │   ├── set_attention.py         # SAB, PMA, HestonSetAttention
+│   │   └── baselines.py             # HestonMLP, HestonTransformerPE, HestonCNN2D
+│   ├── training.py                  # train/evaluate, run_training, predict, compute_metrics
+│   ├── runs.py                      # run dirs, checkpointing, train_one / train_many
+│   ├── interp.py                    # internals collection, attention stats, seed ablation
+│   ├── recalibration.py             # re-pricing, recalibration RMSE
+│   ├── probes.py                    # ridge probe utilities
+│   └── sae.py                       # surface properties + sparse autoencoder
+├── scripts/                         # numbers = execution order
+│   ├── __init__.py
+│   ├── run_checks.py                # (1)  pricing/inversion sanity checks
+│   ├── generate_data.py             # (2)  dataset generation + example smiles figure
+│   ├── train_main.py                # (3)  train SAT + MLP (optional aug arm)
+│   ├── train_ablations.py           # (4)  train ablation architectures
+│   ├── run_rq1.py                   # (5)  sparsity sweep
+│   ├── run_rq2.py                   # (6)  PMA seed specialization
+│   ├── run_rq3.py                   # (7)  permutation invariance + noise robustness
+│   ├── run_recalibration.py         # (8)  re-price predicted parameters
+│   ├── run_probes.py                # (9)  linear probes across depth
+│   └── run_sae.py                   # (10) SAE training + feature characterisation
+├── data/                            # created at runtime: cached surfaces + splits (.npz)
+├── runs/n50000/                     # created at runtime: checkpoints, configs, histories per arch/seed
+└── results/n50000/                  # created at runtime: figures/ and tables/
 
 ## Running
 
-Run everything from the repo root (`REPO_ROOT = Path.cwd()`, exactly as in the
-notebook — `data/`, `runs/`, and `results/` are created in the working
-directory), in the notebook's cell order:
+Run everything from the repo root (`REPO_ROOT = Path.cwd()`, :
 
 ```bash
 python -m scripts.run_checks
