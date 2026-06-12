@@ -164,9 +164,6 @@ def load_arrays_and_splits(n_samples: int, data_seed: int = DEFAULT_DATA_SEED,
     return X, y, y_t, splits, meta
 
 
-# --------------------------------------------------------------------------- #
-# Torch side
-# --------------------------------------------------------------------------- #
 def build_loaders(X: np.ndarray, y_t: np.ndarray, splits: dict,
                   batch_size: int, train_seed: int, num_workers: int = 0):
 
