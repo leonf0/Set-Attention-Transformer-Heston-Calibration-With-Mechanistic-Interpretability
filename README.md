@@ -4,6 +4,7 @@ Dependencies: numpy, scipy, pandas, torch, matplotlib.
 
 ## Repo Structure
 
+```
 heston_sat_mechinterp/
 ├── README.md                        
 ├── src/
@@ -37,8 +38,8 @@ heston_sat_mechinterp/
 │   └── run_sae.py                   # (10) SAE training + feature characterisation
 ├── data/                            # created at runtime: cached surfaces + splits (.npz)
 ├── runs/n50000/                     # created at runtime: checkpoints, configs, histories per arch/seed
-└── results/n50000/                  # created at runtime: figures/ and tables/
-
+└── results/n50000/                  # created at runtime: figures/ and tables/ 
+```
 ## Running
 
 Run everything from the repo root (`REPO_ROOT = Path.cwd()`, :
