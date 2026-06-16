@@ -35,3 +35,55 @@ Where $\varphi(u;\tau,\Psi)$ is the Heston Characteristic function given by
 $$ \varphi(u;\tau,\Psi) = \mathbb{E}^{\mathbb{Q}}\left[e^{iu \log S_T}\right] = e^{iu \log S_0}\varphi_{\mathrm{ret}}(u;\tau,\Psi) $$
 
 $$ \varphi_{\mathrm{ret}}(u;\tau,\Psi) = \mathbb{E}^{\mathbb{Q}}\left[e^{iu \log(S_T/S_0)}\right] $$
+
+## The Closed-Form Characteristic Function & Feyman-Kac Equation
+
+Take a process driven by an SDE with drift $\mu$ and diffusion $\sigma$:
+
+$$ dX_t = \mu(X_t,t)dt + \sigma(X_t,t)dW_t $$
+
+and define a function:
+
+$$f(x,t) = \mathbb{E}\left[g(X_T)\mid X_t = x\right]$$
+
+the expected payoff $g$ at maturity, given you're at state $x$ now. Feynman–Kac states that $f$ solves the PDE:
+
+$$ \frac{\partial f}{\partial t} + \mu \frac{\partial f}{\partial x}+ \frac{1}{2}\sigma^2 \frac{\partial^2 f}{\partial x^2} = 0,\qquad f(x,T) = g(x) $$
+
+Within our context this means that the characteristic function $f(u,\tau)=\mathbb{E}^{\mathbb{Q}}[e^{iu\log S_T}]$ must satisfy the backward PDE which we obtain by applying Feynman–Kac to the two-factor Heston dynamics. 
+
+Because Heston is an *affine* model, meaning the drift and the squared diffusion (the variance) of every state variable are in an affine form (constant-plus-linear), we can look for a solution that is exponential-affine in the state:
+
+$$f = \exp\big(C(\tau) + D(\tau)v_0 + iu\log S_0\big)$$
+
+Substituting this ansatz into the PDE and collecting powers of $v$ collapses the PDE into two ODEs, one being a Riccati equation for $D$ and a direct integral for $C$. 
+
+$$ \frac{dD}{d\tau} = \frac{1}{2}\xi^2 D^2 - \beta D - \frac{1}{2}(u^2 + iu), \qquad D(0)=0 $$
+
+$$ \frac{dC}{d\tau} = (r-q)iu + \kappa\theta D(u,\tau), \qquad C(0)=0 $$
+
+Solving these gives us the closed form below, and removing the spot factor $e^{iu\log S_0}$ leaves the return characteristic function $\varphi_{\mathrm{ret}}=\exp(C+Dv_0)$.
+
+**Intermediate terms.**
+
+$$\beta = \kappa - \rho\xi iu, \qquad d = \sqrt{\beta^{2} + \xi^{2}\left(u^{2}+iu\right)}, \qquad g = \frac{\beta - d}{\beta + d}$$
+
+- $\beta$ represents the effective mean-reversion rate which is the base reversion speed $\kappa$ shifted by the price–variance correlation $\rho\xi iu$ that the frequency-$u$ component feels.
+- $d$ is the **discriminant** of the Riccati equation's associated quadratic.
+- $g$ is the **integration constant** fixed by the initial condition $D(0)=0$, controlling the shape of the interpolation in $D$.
+
+**Affine coefficients.**
+
+$$D(u,\tau) = \frac{\beta-d}{\xi^{2}}\cdot\frac{1-e^{-d\tau}}{1-ge^{-d\tau}}$$
+
+$D$ is the coefficient on $v_0$ that measures how strongly the distribution depends on current variance. It is zero at $\tau=0$ and saturates to $(\beta-d)/\xi^2$ as $\tau\to\infty$, since mean reversion eventually washes out the initial variance.
+
+$$C(u,\tau) = (r-q)iu\tau + \frac{\kappa\theta}{\xi^{2}}\left[(\beta-d)\tau - 2\log\left(\frac{1-g\,e^{-d\tau}}{1-g}\right)\right]$$
+
+$C$ is the part independent of $v_0$. It accumulates the deterministic drift $(r-q)iu\tau$ and the long-run variance $\theta$ pumped in through the $\kappa\theta$ term over the whole path.
+
+**The characteristic function.**
+
+$$\varphi_{\mathrm{ret}}(u;\tau,\Psi) = \exp\big(C(u,\tau) + D(u,\tau)\,v_0\big)$$
+
+The log of the CF is linear in $v_0$. This affine structure is the reason the closed form exists at all.
