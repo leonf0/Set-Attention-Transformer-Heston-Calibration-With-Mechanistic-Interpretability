@@ -90,7 +90,66 @@ Matching the functions $\phi$, and $\rho$ defined in the previous section.
 
 ## Baselines and Ablations
 
+1. MLP baseline. We use an MLP with hidden dimensions 512–256–128, GELU activations, batch normalisation, and dropout to map the flattened $120\times3$ surface to the five parameters. This serves as baseline and the control for the entire set-based approach since it doesn't impose any relational structure and is not permutation invariant, treating each (log-moneyness, maturity, IV) slot as a fixed coordinat. It has ~351k parameters it is approximately two and half times the size of the Set Transformer, a deliberately capacity-generous control.
+
+2. PMA vs SAB ablations. These two ablations remove one attention component from the set transformer whilst keeping everything else the same, decomposing it into its encoder and its pooling. These ablations aim to identify what the more important components of the set transformer are.
+
+3. Transformer-PE is architecturally close to the set transformer, it is a self-attention encoder with a mean-pooled decoder but adds sinusoidal positional encodings to the token embeddings (~150k params). The PE injects the grid index as a feature and breaks permutation invariance; each token already carries its $(log m, \sqrt{\tau})$coordinates as input channels, so the positional signal is largely redundant. This architecture is mainly measures the cost of discarding permutation invariance, not a benefit from added position.
+
+4. 2D CNN. This model reshapes the surface into a $15\times8$ image over $(log-moneyness \times maturity)$ with three channels and applies a stack of $3 \times 3$ convolutions (~226k params). The convolution imposes a spatial-locality inductive bias, adjacent grid cells are related, and local filters can identify features such as smile curvature. This comparison looks at whether that locality bias, which seems intuitive for a smooth surface, gives any advantage over the set transformer's global, order-free attention. Like the MLP, it requires the full fixed grid and is not permutation-invariant.
+
 ## Training and Evaluation
+
+Label Space: We apply the following transformations to the label space prior to training: log on the four strictly-positive params ($v_{0}, \kappa, \theta, \xi$), and arctanh on $\rho$. This is because log maps positives onto ℝ and equalizes the scale of the parameters (raw $\kappa$ can reach 8 while $v_{0}/\theta$ only reach 0.25, so untransformed MSE would be dominated by $\kappa$); arctanh respects the open interval $\rho \in (−1,1)$.
+
+
+Objective and Metrics: The loss function we aim to minimise in training is MSE on the transformed targets. Mean Absolute Error and $R^{2}$ are then computed after inverse-transforming both prediction and target back to natural units, as performance metrics
+
+Layer Normalisation: Our set transformer architecture uses layer normalisation to both reduce training time, and regularise the model. At each layer l the mean and variance of the inputs are computed by:
+
+$$\mu_t = \frac{1}{H}\sum_{i=1}^{H} a_i^t \qquad \sigma_t = \sqrt{\frac{1}{H}\sum_{i=1}^{H}\left(a_i^t - \mu_t\right)^2}$$
+
+The inputs are then normalised, with the normalised inputs being given by:
+
+$$\hat{a}_i^{\ell} = \frac{a_i^{\ell} - \mu_i^{\ell}}{\sigma_i^{\ell}}$$
+
+Adaptive Gradient with Decoupled Weight Decay Regularisation (AdamW): We update weights using the AdamW algorithm
+
+$$
+t \leftarrow t+1
+$$
+
+$$
+\nabla_{\theta_t} L(\theta_{t-1}) \leftarrow \text{batch}(\theta_{t-1})
+$$
+
+$$
+g_t \leftarrow \nabla_{\theta_t} L(\theta_{t-1})
+$$
+
+$$
+m_t \leftarrow \beta_1 m_{t-1} + (1-\beta_1)g_t
+$$
+
+$$
+v_t \leftarrow \beta_2 v_{t-1} + (1-\beta_2)(g_t)^2
+$$
+
+$$
+\hat{m}_t \leftarrow \frac{m_t}{1-\beta_1^t}
+$$
+
+$$
+\hat{v}_t \leftarrow \frac{v_t}{1-\beta_2^t}
+$$
+
+$$
+\eta_t \leftarrow \text{schedule}(t)
+$$
+
+$$
+\theta_t \leftarrow \theta_{t-1} - \eta_t \left(\alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t}+\epsilon} + \lambda \theta_{t-1}\right)
+$$
 
 ## Experiment Results
 
