@@ -43,7 +43,7 @@
 | Transformer + pos. enc. | 150,405 | 0.0420 ± 0.0097 | 0.9877 ± 0.0018 |
 | 2D CNN (15×8 grid) | 225,541 | 0.0401 ± 0.0104 | 0.9866 ± 0.0045 |
 
-### Table 3 — Permutation invariance confirmation
+### Table 3 - Permutation invariance confirmation
 
 Max |Δprediction| over 10 random point-permutations of 200 test surfaces, confirming the permutation invariance of the set transformer.
 
