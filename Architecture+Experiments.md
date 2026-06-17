@@ -38,11 +38,11 @@ Where SAB is a self attention block layer, $PMA_{4}$ is a pooling by multi-head 
 
 ## The Set Transformer
 
+### Self Attention Block architecture
+
 <p align="center">
   <img src="diagrams/sab_architecture.png" alt="" width="80%"/>
 </p>
-
-### Diagram 1 - Self Attention Block architecture
 
 Self-attention is a mechanism is a mechanism that relates different elements of a set or sequence, with a goal of computing a represntation of this set/sequence. This mechanism has the advantage that the are no recurrence relations between elements, so all elements are related in a single operation ($O(1)$ path length). Given 3 vectors Q (the query), K (the key), and V (the value), we compute:
 
@@ -64,15 +64,29 @@ Where LayerNorm is the layer normalisation operation (see Training and Evaluatio
 
 $$SAB(X) = MAB(X,X)$$
 
+### Pooling by Multi-head Attention Architecture
+
 <p align="center">
   <img src="diagrams/pma_architecture.png" alt="" width="80%"/>
 </p>
+
+Pooling by Multi-head Attention uses a set (S) of k seed vectors with learnable paramteres to aggregate the features, we define the function as:
+
+$$PMA_{k}(Z) = MAB(S, rFF(Z)$$
+
+### Set Transformer Architecture We Use For the Model Calibration Problem
 
 <p align="center">
   <img src="diagrams/sat_architecture.png" alt="" width="80%"/>
 </p>
 
-Diagram 3 - The full Set Transformer Architecture we use for this model calibration problem
+Given a set X of $(K, T, \sigma)$ triples we compute the Heston paramters with the encoder-decoder transformation:
+
+$$Encoder(X) = SAB(SAB(X))$$
+
+$$Decoder(Z) rFF(PMA_{4}(Z)$$
+
+Matching the functions $\phi$, and $\rho$ defined in the previous section.
 
 ## Baselines and Ablations
 
