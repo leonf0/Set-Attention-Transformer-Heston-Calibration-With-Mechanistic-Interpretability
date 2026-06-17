@@ -20,6 +20,21 @@ $$
 f(\{x_1,\ldots,x_M\}) = f(\{x_{\pi(1)},\ldots,x_{\pi(M)}\}).
 $$
 
+It can be further demonstrated that a function $f : 2^X \to Y$ acting on sets is permutation invariant if and only if it can be decomposed as
+
+$$
+f(X) = \rho\left(\sum_{x \in X} \phi(x)\right),
+$$
+
+for suitable transformations $\phi$ and $\rho$, which in the machine learning context will usually be an encoder ($\phi$), and a decoder ($\rho$) which are composed of several layers.
+
+For these reasons we propose a variant of the Set Transformer for this problem, where the encoder and decoder functions are:
+
+$$\phi(X) = SAB(SAB(X))$$
+
+$$\rho(Z) = rFF(PMA_{4}(Z))$$
+
+Where SAB is a set attention block layer, $PMA_{4}$ is a pooling by multi-head attention layer with 4 seed vectors, rFF is a feedforward network. We will now explicate the function of these layers.
 
 ## The Set Transformer
 
