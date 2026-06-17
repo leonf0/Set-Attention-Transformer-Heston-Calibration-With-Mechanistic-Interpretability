@@ -200,3 +200,9 @@ Max |Δprediction| over 10 random point-permutations of 200 test surfaces, confi
 </p>
 
 ## Discussion
+
+From the Mean Absolute Error, $R^{2}$, and recalibration error, it is clear that the set transformer provides a measureable stronger performance compared to the baselines, even with significantly less parameters; with the ablations demonstrating that this is primarily driven by the self-attention blocks. 
+
+This finding validates the hypothesis that a permutation invariant function approximator is the most effective way to approach the calibration problem from a machine learning perspective.
+
+Another finding is that despite the clear precision advantage on a full surface, when we are subjected to sparse surfaces or noisy implied volatility inputs there is a clear tradeoff where the set transformers performance on the $\theta$ and $v_{0}$ parameters deteriorates at a significantly greater rate than that of the MLP.
