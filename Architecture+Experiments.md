@@ -84,7 +84,7 @@ Given a set X of $(K, T, \sigma)$ triples we compute the Heston paramters with t
 
 $$Encoder(X) = SAB(SAB(X))$$
 
-$$Decoder(Z) rFF(PMA_{4}(Z)$$
+$$Decoder(Z) rFF(PMA_{4}(Z))$$
 
 Matching the functions $\phi$, and $\rho$ defined in the previous section.
 
