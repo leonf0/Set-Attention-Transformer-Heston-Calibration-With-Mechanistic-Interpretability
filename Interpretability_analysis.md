@@ -43,3 +43,23 @@ $$f_{i}(x) = ReLU((x - b_{decoder})W_{encoder} + b_{encoder})$$
 <p align="center">
   <img src="diagrams/probe_heatmap.png" alt="" width="80%"/>
 </p>
+
+**Diagram 1** - Heatmap of per-peramater decodability across layers.
+
+
+
+| Property | Feature | Pearson $r$ |
+|:---|---:|---:|
+| `t_v0` | 138 | -0.914 |
+| `t_kappa` | 102 | -0.748 |
+| `t_theta` | 392 | -0.842 |
+| `t_sigma` | 316 | -0.780 |
+| `t_rho` | 103 | 0.508 |
+| `atm_short` | 138 | -0.930 |
+| `term_slope` | 471 | 0.876 |
+| `skew_short` | 248 | -0.885 |
+| `curve_short` | 21 | 0.911 |
+
+**Table 1** - SAE extracted features with strongest correlation to known properties. "t_v0" is $log(v_{0})$,  "t_kappa" is $log(\kappa)$, "t_theta" is $log(\theta)$,  "t_sigma" is $log(\xi)$,  "t_rho" is $arctanh(\rho)$, "atm_short" is near-ATM implied volatility at the shortest maturity, "term_slope" is 1-year ATM implied volatility minus 1-week ATM implied volatility, "skew_short" is the linear coefficient of a quadratic fit of the 7-day smile against log-moneyness (financially interpreted as a combination of $\rho$ and $\xi$), "curve_short" is 2x the quadratic coefficient of that same fit (the smile's convexity).
+
+
