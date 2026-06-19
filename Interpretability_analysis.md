@@ -62,6 +62,6 @@ $$f_{i}(x) = ReLU((x - b_{decoder})W_{encoder} + b_{encoder})$$
 
 **Table 1** - SAE extracted features with strongest correlation to known properties. "t_v0" is $log(v_{0})$,  "t_kappa" is $log(\kappa)$, "t_theta" is $log(\theta)$,  "t_sigma" is $log(\xi)$,  "t_rho" is $arctanh(\rho)$, "atm_short" is near-ATM implied volatility at the shortest maturity, "term_slope" is 1-year ATM implied volatility minus 1-week ATM implied volatility, "skew_short" is the linear coefficient of a quadratic fit of the 7-day smile against log-moneyness (financially interpreted as a combination of $\rho$ and $\xi$), "curve_short" is 2x the quadratic coefficient of that same fit (the smile's convexity).
 
-These findings very clearly demonstrate that sparse features align with human-readable surface geometry. Particularly surface geometry features are captured more cleanly than the parameters that drive it, which indicates that the model is actually learning to represent the volatility surface, and is not in any way overfitting to the data samples.
+These findings very clearly demonstrate that sparse features align with human-readable surface geometry. Particularly surface geometry features are captured more cleanly than the parameters that drive it, which indicates that the model is actually learning to represent the volatility surface, and is not overfitting to the data samples.
 
 
