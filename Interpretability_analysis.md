@@ -39,3 +39,7 @@ Where c is the activation value of the feature. In our experiments we use $\lamb
 $$f_{i}(x) = ReLU((x - b_{decoder})W_{encoder} + b_{encoder})$$
 
 ## Experiment Results and Discussion
+
+<p align="center">
+  <img src="diagrams/probe_heatmap.png" alt="" width="80%"/>
+</p>
