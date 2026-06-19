@@ -44,7 +44,7 @@ $$f_{i}(x) = ReLU((x - b_{decoder})W_{encoder} + b_{encoder})$$
   <img src="diagrams/probe_heatmap.png" alt="" width="80%"/>
 </p>
 
-**Diagram 1** - Heatmap of per-peramater decodability across layers.
+**Diagram 1** - Heatmap of per-peramater decodability across layers. Here we see an expected monotone increase in decodability of parameters as we reach the later layers of the model. Perhaps a more interesting insight is that the model requires it substantially more layers to create these "computationally useful" representations for paramaters $\kappa$
 
 
 
