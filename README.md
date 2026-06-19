@@ -1,6 +1,14 @@
 # Heston Calibration Set Attention Transformer + Mechanistic Interpretability
 
-Dependencies: numpy, scipy, pandas, torch, matplotlib.
+## Project Overview
+
+A Set Transformer that reads an implied volatility surface and calibrates the Heston model based on this, with baseline models for benchmarking performance, and mechanistic interpretability experiments on the model using sparse autoencoders and linear probes.
+
+"Data_generation.md" Covers the process of generating synthetic data for the model training.
+
+"Architecture+Experiments.md" Covers the model architecture, design choices, and performance based experiments.
+
+"Interpretability_analysis.md" Covers the mechanistic interpretability aspect, both the process of decomposing and interpreting the model and our experiment results.
 
 ## Repo Structure
 
