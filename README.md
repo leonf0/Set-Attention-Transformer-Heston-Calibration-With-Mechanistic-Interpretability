@@ -53,8 +53,6 @@ heston_sat_mechinterp/
 ```
 ## Running
 
-Run everything from the repo root (`REPO_ROOT = Path.cwd()`, :
-
 ```bash
 python -m scripts.run_checks
 python -m scripts.generate_data
